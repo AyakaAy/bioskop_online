@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineAdmin - Manajemen Film Studio</title>
+    <title>Absolute Cinema - Manajemen Film Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
-    <aside class="sidebar">
+    <aside class="sidebar"> 
         <div class="brand-profile">
             <h2>Studio Manager</h2>
             <p>Production Head</p>
@@ -31,7 +31,7 @@
     <main class="main-content">
         <header class="topbar">
             <div class="topbar-left">
-                <span class="logo-text">CineAdmin</span>
+                <span class="logo-text">Absolute Cinema</span>
                 <nav class="topbar-nav">
                     <a href="#">Recent</a>
                     <a href="#">Drafts</a>
