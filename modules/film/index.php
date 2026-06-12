@@ -1,3 +1,10 @@
+<?php
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -146,7 +153,7 @@
         </section>
 
         <footer class="main-footer">
-            <p>&copy; 2024 CineAdmin Studio Management System. All rights reserved.</p>
+            <p>&copy; 2026 Absolute Cinema Studio Management System. All rights reserved.</p>
         </footer>
     </main>
 

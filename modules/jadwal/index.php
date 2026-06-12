@@ -31,25 +31,20 @@
     <main class="main-content">
         <header class="topbar">
             <div class="topbar-left">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari film atau bioskop...">
-                </div>
+                <span class="logo-text">Absolute Cinema</span>
                 <nav class="topbar-nav">
-                    <a href="#" class="active">Recent</a>
+                    <a href="#">Recent</a>
                     <a href="#">Drafts</a>
                     <a href="#">Archived</a>
                 </nav>
             </div>
             <div class="topbar-right">
-                <i class="fa-regular fa-bell icon-btn badge-notification"></i>
-                <div class="user-profile">
-                    <div class="user-info">
-                        <span class="user-name">Alex Rivera</span>
-                        <span class="user-role">PRODUCTION HEAD</span>
-                    </div>
-                    <img src="https://via.placeholder.com/35" alt="Avatar" class="avatar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Cari film...">
                 </div>
+                <i class="fa-regular fa-bell icon-btn"></i>
+                <i class="fa-regular fa-user icon-btn"></i>
             </div>
         </header>
 

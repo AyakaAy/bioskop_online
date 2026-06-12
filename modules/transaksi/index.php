@@ -1,10 +1,35 @@
-
+<?php
+// Simulasi data transaksi dari database MySQL (Konteks Tahun 2026)
+// $transactions = [
+//     [
+//         "id" => "#TX-001",
+//         "customer" => "Rian Adi",
+//         "metode" => "GoPay",
+//         "status" => "LUNAS",
+//         "waktu" => "2026-06-12 11:00"
+//     ],
+//     [
+//         "id" => "#TX-002",
+//         "customer" => "Siti Aminah",
+//         "metode" => "Transfer BCA",
+//         "status" => "PENDING",
+//         "waktu" => "2026-06-12 11:15"
+//     ],
+//     [
+//         "id" => "#TX-003",
+//         "customer" => "Budi Darmawan",
+//         "metode" => "OVO",
+//         "status" => "GAGAL",
+//         "waktu" => "2026-06-12 11:30"
+//     ]
+// ];
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absolute Cinema - Manajemen Jadwal Tayang</title>
+    <title>Absolute Cinema - Manajemen Transaksi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="index_transaksi.css">
@@ -13,8 +38,8 @@
 
     <aside class="sidebar">
         <div class="brand-profile">
-            <h2>Absolute Cinema</h2>
-            <p>Studio Manager</p>
+            <h2>Studio Manager</h2>
+            <p>Production Head</p>
         </div>
         <nav class="nav-menu">
             <a href="#"><i class="fa-solid fa-gauge"></i> Dashboard</a>
@@ -32,111 +57,102 @@
     <main class="main-content">
         <header class="topbar">
             <div class="topbar-left">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari film atau bioskop...">
-                </div>
+                <span class="logo-text">Absolute Cinema</span>
                 <nav class="topbar-nav">
-                    <a href="#" class="active">Recent</a>
+                    <a href="#">Recent</a>
                     <a href="#">Drafts</a>
                     <a href="#">Archived</a>
                 </nav>
             </div>
             <div class="topbar-right">
-                <i class="fa-regular fa-bell icon-btn badge-notification"></i>
-                <div class="user-profile">
-                    <div class="user-info">
-                        <span class="user-name">Alex Rivera</span>
-                        <span class="user-role">PRODUCTION HEAD</span>
-                    </div>
-                    <img src="https://via.placeholder.com/35" alt="Avatar" class="avatar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Cari film...">
                 </div>
+                <i class="fa-regular fa-bell icon-btn"></i>
+                <i class="fa-regular fa-user icon-btn"></i>
             </div>
         </header>
 
         <nav class="breadcrumbs">
-            <a href="#">Admin</a> &gt; <a href="#">Movies</a> &gt; <span class="current">Schedules</span>
+            <a href="#">Admin</a> &gt; <a href="#">Movies</a> &gt; <span class="current">Transaksi</span>
         </nav>
 
         <section class="page-header">
             <div class="header-title">
-                <h1>Manajemen Jadwal Tayang</h1>
+                <h1>Manajemen Transaksi</h1>
             </div>
-            <button class="btn-primary"><i class="fa-solid fa-plus"></i> Tambah Jadwal Tayang</button>
+            <button class="btn-primary"><i class="fa-solid fa-plus"></i> Create Booking / Transaksi Baru</button>
         </section>
 
         <section class="stats-grid">
-            <div class="card">
-                <div class="card-header-icon blue-icon">
-                    <i class="fa-regular fa-calendar"></i>
-                    <span class="stat-trend">+12%</span>
+            <div class="card-stat">
+                <div class="stat-icon icon-blue">
+                    <i class="fa-regular fa-file-lines"></i>
                 </div>
-                <p class="card-label">Total Penayangan Hari Ini</p>
-                <span class="card-value">142</span>
-            </div>
-            <div class="card">
-                <div class="card-header-icon purple-icon">
-                    <i class="fa-solid fa-ticket"></i>
+                <div class="stat-info">
+                    <p class="card-label">Total Transaksi Hari Ini</p>
+                    <span class="card-value">124</span>
                 </div>
-                <p class="card-label">Okupansi Studio Rata-rata</p>
-                <span class="card-value">78%</span>
             </div>
-            <div class="card card-wide">
-                <p class="card-label">Film Terlaris Pekan Ini</p>
-                <span class="card-value large-text">Avengers: Endgame</span>
+            <div class="card-stat">
+                <div class="stat-icon icon-green">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="card-label">Pendapatan Harian</p>
+                    <span class="card-value">Rp 4.250.000</span>
+                </div>
+            </div>
+            <div class="card-stat card-relative">
+                <div class="stat-icon icon-blue">
+                    <i class="fa-regular fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <p class="card-label">Metode Populer</p>
+                    <span class="card-value">GoPay</span>
+                </div>
+                <i class="fa-solid fa-chart-line bg-watermark"></i>
             </div>
         </section>
 
         <section class="table-container">
             <div class="table-header">
-                <h2>Daftar Jadwal Penayangan</h2>
+                <h2>Daftar Transaksi</h2>
                 <div class="table-actions">
                     <button class="btn-outline"><i class="fa-solid fa-sliders"></i> Filter</button>
-                    <button class="btn-outline"><i class="fa-solid fa-download"></i> Ekspor</button>
+                    <button class="btn-outline"><i class="fa-solid fa-download"></i> Export</button>
                 </div>
             </div>
 
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Film</th>
-                        <th>Bioskop</th>
-                        <th>Studio</th>
-                        <th>Tanggal & Jam</th>
-                        <th>Harga</th>
-                        <th style="width: 80px; text-align: center;">Aksi</th>
+                        <th class="ps-24">ID TRANSAKSI</th>
+                        <th>NAMA CUSTOMER</th>
+                        <th>METODE BAYAR</th>
+                        <th>STATUS</th>
+                        <th>WAKTU TRANSAKSI</th>
+                        <th style="width: 100px; text-align: center;">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($schedules as $row): ?>
+                    <?php foreach ($transactions as $row): ?>
                     <tr>
+                        <td class="ps-24 text-dark fw-bold"><?= $row['id']; ?></td>
+                        <td class="text-dark fw-medium"><?= $row['customer']; ?></td>
+                        <td><?= $row['metode']; ?></td>
                         <td>
-                            <div class="movie-cell">
-                                <img src="<?= $row['poster']; ?>" alt="Poster" class="poster-thumb">
-                                <div class="movie-details">
-                                    <strong><?= $row['judul']; ?></strong>
-                                    <?php $badgeColor = ($row['rating_usia'] == 'D17+') ? 'badge-d17' : 'badge-r13'; ?>
-                                    <span class="badge-age <?= $badgeColor; ?>"><?= $row['rating_usia']; ?></span>
-                                </div>
-                            </div>
+                            <?php 
+                                $statusClass = 'status-gagal';
+                                if ($row['status'] == 'LUNAS') $statusClass = 'status-lunas';
+                                if ($row['status'] == 'PENDING') $statusClass = 'status-pending';
+                            ?>
+                            <span class="badge-status <?= $statusClass; ?>"><?= $row['status']; ?></span>
                         </td>
-                        <td>
-                            <div class="location-cell">
-                                <strong><?= $row['bioskop']; ?></strong>
-                                <span class="subtext"><?= $row['lokasi']; ?></span>
-                            </div>
-                        </td>
-                        <td><span class="studio-text"><?= $row['studio']; ?></span></td>
-                        <td>
-                            <div class="datetime-cell">
-                                <span><i class="fa-regular fa-calendar-days"></i> <?= $row['tanggal']; ?></span>
-                                <span class="time-text"><i class="fa-regular fa-clock"></i> <?= $row['jam']; ?></span>
-                            </div>
-                        </td>
-                        <td><strong class="price-text"><?= $row['harga']; ?></strong></td>
+                        <td class="text-muted small"><?= $row['waktu']; ?></td>
                         <td class="action-buttons">
-                            <a href="edit_schedule.php?id=<?= $row['id']; ?>" class="btn-edit"><i class="fa-solid fa-pencil"></i></a>
-                            <a href="delete_schedule.php?id=<?= $row['id']; ?>" class="btn-delete" onclick="return confirm('Hapus jadwal ini?')"><i class="fa-solid fa-trash"></i></a>
+                            <a href="print.php?id=<?= $row['id']; ?>" class="btn-print" title="Cetak Nota"><i class="fa-solid fa-print"></i></a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -144,28 +160,28 @@
             </table>
 
             <div class="table-footer">
-                <p>Menampilkan 2 dari 142 jadwal penayangan</p>
+                <p>Showing 1 to 3 of 124 entries</p>
                 <div class="pagination">
-                    <button class="page-nav" disabled>&lt;</button>
-                    <button class="page-num active">1</button>
-                    <button class="page-num">2</button>
-                    <button class="page-num">3</button>
-                    <span class="page-dots">...</span>
-                    <button class="page-num">12</button>
-                    <button class="page-nav">&gt;</button>
+                    <button class="btn-page" disabled>&lt;</button>
+                    <button class="btn-page active-page">1</button>
+                    <button class="btn-page">2</button>
+                    <button class="btn-page">3</button>
+                    <button class="btn-page">&gt;</button>
                 </div>
             </div>
         </section>
 
-        <footer class="system-footer">
-            <div class="footer-status">
-                <h4>SISTEM STATUS</h4>
-                <p><span class="status-indicator live"></span> Database Sinkron</p>
+        <section class="upgrade-banner">
+            <div class="banner-text">
+                <h3>Studio Analytics Upgrade</h3>
+                <p>Integrate real-time box office data directly into your management dashboard for a complete financial overview of all active screenings.</p>
             </div>
-            <div class="footer-help">
-                <h4>PUSAT BANTUAN</h4>
-                <a href="#">Panduan Manajemen Jadwal</a>
-            </div>
+            <button class="btn-upgrade-action">Learn More</button>
+            <i class="fa-solid fa-film banner-watermark"></i>
+        </section>
+
+        <footer class="main-footer">
+            <p>&copy; 2026 Absolute Cinema Studio Management System. All rights reserved.</p>
         </footer>
     </main>
 
