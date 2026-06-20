@@ -23,10 +23,10 @@
             <p>Production Head</p>
         </div>
         <nav class="nav-menu">
-            <a href="#"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
-            <a href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a>
-            <a href="#"><i class="fa-solid fa-users"></i> Users</a>
+            <a href="#"><i class="fa-solid fa-chart-simple"></i> Jadwal </a>
+            <a href="#"><i class="fa-solid fa-users"></i> Transaksi </a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
         <div class="sidebar-footer">
@@ -60,7 +60,9 @@
                 <h1>Manajemen Film Studio</h1>
                 <p>Kelola katalog film produksi studio Anda secara efisien.</p>
             </div>
-            <button class="btn-primary"><i class="fa-solid fa-plus"></i> Tambah Film Baru</button>
+            <form action="tambah.php" method="post">
+                <button class="btn-primary" type="submit"><i class="fa-solid fa-plus"></i> Tambah Film Baru</button>
+            </form>
         </section>
 
         <section class="stats-grid">

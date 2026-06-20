@@ -20,22 +20,12 @@
             </div>
         </div>
         
-        <nav class="nav-menu">
-            <a href="#" class="<?= $current_page == 'dashboard' ? 'active' : ''; ?>">
-                <i class="fa-solid fa-gauge"></i> Dashboard
-            </a>
-            <a href="#" class="<?= $current_page == 'movies' ? 'active' : ''; ?>">
-                <i class="fa-solid fa-film"></i> Movies
-            </a>
-            <a href="#" class="<?= $current_page == 'schedules' ? 'active' : ''; ?>">
-                <i class="fa-regular fa-calendar-days"></i> Schedules
-            </a>
-            <a href="#" class="<?= $current_page == 'transactions' ? 'active' : ''; ?>">
-                <i class="fa-solid fa-money-bill-wave"></i> Transactions
-            </a>
-            <a href="#" class="<?= $current_page == 'settings' ? 'active' : ''; ?>">
-                <i class="fa-solid fa-gear"></i> Settings
-            </a>
+         <nav class="nav-menu">
+            <a href="index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
+            <a href="jadwal.php"><i class="fa-solid fa-chart-simple"></i> Jadwal </a>
+            <a href="transaksi.php"><i class="fa-solid fa-users"></i> Transaksi </a>
+            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
         
         <div class="sidebar-footer">
