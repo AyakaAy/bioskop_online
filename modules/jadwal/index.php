@@ -17,8 +17,8 @@
         </div>
         <nav class="nav-menu">
             <a href="#"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
             <a href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a>
+            <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
             <a href="#"><i class="fa-solid fa-users"></i> Users</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>

@@ -1,9 +1,29 @@
 <?php
+// 1. Hubungkan ke database 
+require_once "../../config/database.php";
 
 
+$query = "SELECT * FROM film";
+$result = mysqli_query($koneksi, $query);
+
+$movies = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+       
+        $movies[] = [
+            'id'          => $row['id_film'] ?? $row['id'], 
+            'judul'       => $row['judul'],
+            'poster'      => !empty($row['poster']) ? $row['poster'] : 'https://via.placeholder.com/40x60', // gambar sementara jika kosong
+            'genre'       => $row['genre'] ?? '-',
+            'durasi'      => $row['durasi'] ?? '-',
+            'rating_usia' => $row['rating_usia'] ?? 'SU'
+        ];
+    }
+}
+
+$total_film = count($movies);
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="id">
@@ -25,8 +45,8 @@
         <nav class="nav-menu">
             <a href="#"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
-            <a href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a>
-            <a href="#"><i class="fa-solid fa-users"></i> Users</a>
+            <a href="../jadwal/index.php"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
+            <a href="../transaksi/index.php"><i class="fa-solid fa-users"></i> Transaksi</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
         <div class="sidebar-footer">
@@ -60,14 +80,14 @@
                 <h1>Manajemen Film Studio</h1>
                 <p>Kelola katalog film produksi studio Anda secara efisien.</p>
             </div>
-            <button class="btn-primary"><i class="fa-solid fa-plus"></i> Tambah Film Baru</button>
+            <button class="btn-primary" onclick="window.location.href='tambah.php'"><i class="fa-solid fa-plus"></i> Tambah Film Baru</button>
         </section>
 
         <section class="stats-grid">
             <div class="card">
                 <p class="card-label">TOTAL FILM</p>
                 <div class="card-value-wrapper">
-                    <span class="card-value">1,248</span>
+                    <span class="card-value"><?= $total_film; ?></span>
                     <span class="badge badge-success">+12%</span>
                 </div>
             </div>
@@ -136,7 +156,7 @@
                         </td>
                         <td class="action-buttons">
                             <a href="edit.php?id=<?= $movie['id']; ?>" class="btn-edit" title="Edit"><i class="fa-solid fa-pencil"></i></a>
-                            <a href="delete.php?id=<?= $movie['id']; ?>" class="btn-delete" title="Hapus" onclick="return confirm('Yakin ingin menghapus film ini?')"><i class="fa-solid fa-trash"></i></a>
+                            <a href="proses.php?hapus=<?= $movie['id']; ?>" class="btn-delete" title="Hapus" onclick="return confirm('Yakin ingin menghapus film ini?')"><i class="fa-solid fa-trash"></i></a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -144,7 +164,7 @@
             </table>
 
             <div class="table-footer">
-                <p>Menampilkan 3 dari 1,248 film</p>
+                <p>Menampilkan <?= $total_film; ?> dari <?= $total_film; ?> film</p>
                 <div class="pagination">
                     <button class="btn-page" disabled>Sebelumnya</button>
                     <button class="btn-page active-page">Selanjutnya</button>
