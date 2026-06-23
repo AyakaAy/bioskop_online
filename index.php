@@ -3,6 +3,7 @@ $page_title = "Absolute Cinema - Dashboard Ringkasan";
 $current_page = "dashboard"; 
 
 include 'header.php'; 
+include 'footer.php';
 ?>
 
         <nav class="breadcrumbs">
