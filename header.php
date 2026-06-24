@@ -21,10 +21,10 @@
         </div>
         
          <nav class="nav-menu">
-            <a href="index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
-            <a href="jadwal.php"><i class="fa-solid fa-chart-simple"></i> Jadwal </a>
-            <a href="transaksi.php"><i class="fa-solid fa-users"></i> Transaksi </a>
+            <a href="#"class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="/bioskop_online/modules/film/index.php""<i class="fa-solid fa-film"></i> Movies</a>
+            <a href="/bioskop_online/modules/jadwal/index.php"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
+            <a href="/bioskop_online/modules/transaksi/index.php"><i class="fa-solid fa-users"></i> Transaksi</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
         

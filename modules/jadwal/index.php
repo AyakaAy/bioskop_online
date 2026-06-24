@@ -16,10 +16,10 @@
             <p>Studio Manager</p>
         </div>
         <nav class="nav-menu">
-            <a href="#"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
-            <a href="#"><i class="fa-solid fa-chart-simple"></i> Analytics</a>
-            <a href="#"><i class="fa-solid fa-users"></i> Users</a>
+            <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="../film/index.php"><i class="fa-solid fa-film"></i> Movies</a>
+            <a href="../jadwal/index.php"class="active"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
+            <a href="../transaksi/index.php"><i class="fa-solid fa-users"></i> Transaksi</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
         <div class="sidebar-footer">

@@ -1,28 +1,9 @@
 <?php
-// Simulasi data transaksi dari database MySQL (Konteks Tahun 2026)
-// $transactions = [
-//     [
-//         "id" => "#TX-001",
-//         "customer" => "Rian Adi",
-//         "metode" => "GoPay",
-//         "status" => "LUNAS",
-//         "waktu" => "2026-06-12 11:00"
-//     ],
-//     [
-//         "id" => "#TX-002",
-//         "customer" => "Siti Aminah",
-//         "metode" => "Transfer BCA",
-//         "status" => "PENDING",
-//         "waktu" => "2026-06-12 11:15"
-//     ],
-//     [
-//         "id" => "#TX-003",
-//         "customer" => "Budi Darmawan",
-//         "metode" => "OVO",
-//         "status" => "GAGAL",
-//         "waktu" => "2026-06-12 11:30"
-//     ]
-// ];
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -42,10 +23,10 @@
             <p>Production Head</p>
         </div>
         <nav class="nav-menu">
-            <a href="index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="#" class="active"><i class="fa-solid fa-film"></i> Movies</a>
-            <a href="#"><i class="fa-solid fa-chart-simple"></i> Jadwal </a>
-            <a href="#"><i class="fa-solid fa-users"></i> Transaksi </a>
+            <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="../film/index.php"><i class="fa-solid fa-film"></i> Movies</a>
+            <a href="../jadwal/index.php"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
+            <a href="../transaksi/index.php"class="active"><i class="fa-solid fa-users"></i> Transaksi</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
         <div class="sidebar-footer">
