@@ -15,8 +15,8 @@
             <div class="brand-logo-box">
                 <i class="fa-solid fa-clapperboard"></i> </div>
             <div>
-                <h2>Absolute Cinema</h2>
-                <p>Studio Manager</p>
+                <h2>Studio Manager</h2>
+                <p>Production Head</p>
             </div>
         </div>
         

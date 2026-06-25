@@ -12,8 +12,8 @@
 
     <aside class="sidebar">
         <div class="brand-profile">
-            <h2>Absolute Cinema</h2>
-            <p>Studio Manager</p>
+            <h2>Studio Manager</h2>
+            <p>Production Head</p>
         </div>
         <nav class="nav-menu">
             <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
