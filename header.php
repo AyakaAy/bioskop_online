@@ -10,19 +10,17 @@
 </head>
 <body>
 
-    <aside class="sidebar">
+    <aside class="sidebar"> 
         <div class="brand-profile">
-            <div class="brand-logo-box">
-                <i class="fa-solid fa-clapperboard"></i> </div>
             <div>
                 <h2>Studio Manager</h2>
                 <p>Production Head</p>
-            </div>
+            </div>  
         </div>
         
          <nav class="nav-menu">
             <a href="#"class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="/bioskop_online/modules/film/index.php""<i class="fa-solid fa-film"></i> Movies</a>
+            <a href="/bioskop_online/modules/film/index.php"><i class="fa-solid fa-film"></i> Movies</a>
             <a href="/bioskop_online/modules/jadwal/index.php"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
             <a href="/bioskop_online/modules/transaksi/index.php"><i class="fa-solid fa-users"></i> Transaksi</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
