@@ -12,8 +12,8 @@ include 'footer.php';
 
         <section class="page-header">
             <div class="header-title">
-                <h1>Ringkasan Studio</h1>
-                <p>Pantau performa penayangan dan statistik finansial real-time.</p>
+                <h1>Absolute Film Studio</h1>
+                <p>Pantau  penayangan fil,.</p>
             </div>
         </section>
 
