@@ -119,19 +119,25 @@ body {
 /* ==========================================
    STYLE UNTUK NAVBAR / TOPBAR
    ========================================== */
-.main-content {
-    margin-left: 240px;
-    flex-grow: 1;
-    padding: 0 40px 40px 40px;
-}
-
 .topbar {
     height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.logo-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
 }
 
 .topbar-nav a {
@@ -140,11 +146,6 @@ body {
     margin-right: 20px;
     font-weight: 500;
     font-size: 0.9rem;
-}
-
-.topbar-nav a.active {
-    color: var(--text-dark);
-    font-weight: 600;
 }
 
 .topbar-right {
@@ -162,44 +163,37 @@ body {
 .search-box i {
     position: absolute;
     left: 12px;
-    color: var(--text-primary);
 }
 
 .search-box input {
     padding: 10px 12px 10px 36px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
+    background-color: #ffffff;
     width: 240px;
     outline: none;
 }
 
-/* Notification Badge Dot */
-.icon-notification-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
 .icon-btn {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     cursor: pointer;
-    color: var(--text-primary);
 }
 
-.notification-dot {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 8px;
-    height: 8px;
-    background-color: #ef4444;
-    border-radius: 50%;
-    border: 2px solid var(--bg-main);
-}
-
-.user-avatar-img {
-    border-radius: 50%;
+.border-avatar {
     border: 1px solid var(--border-color);
-    object-fit: cover;
+    padding: 4px;
+    border-radius: 50%;
+}
+
+.btn-dark {
+    background-color: var(--text-dark);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
 }
 
 /* ==========================================
@@ -342,4 +336,11 @@ body {
     font-size: 3rem;
     color: #cbd5e1;
     margin-bottom: 12px;
+}
+
+.main-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
 }

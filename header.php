@@ -35,8 +35,9 @@
     <main class="main-content">
         <header class="topbar">
             <div class="topbar-left">
+                <span class="logo-text">Absolute Cinema</span>
                 <nav class="topbar-nav">
-                    <a href="#" class="active">Recent</a>
+                    <a href="#">Recent</a>
                     <a href="#">Drafts</a>
                     <a href="#">Archived</a>
                 </nav>
@@ -44,12 +45,9 @@
             <div class="topbar-right">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari data...">
+                    <input type="text" placeholder="Cari film...">
                 </div>
-                <div class="icon-notification-wrapper">
-                    <i class="fa-regular fa-bell icon-btn"></i>
-                    <span class="notification-dot"></span>
-                </div>
-                <img src="https://via.placeholder.com/35" alt="Profile" class="user-avatar-img">
+                <i class="fa-regular fa-bell icon-btn"></i>
+                <i class="fa-regular fa-user icon-btn"></i>
             </div>
         </header>

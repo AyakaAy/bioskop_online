@@ -2,7 +2,7 @@
 
 $host = "localhost";
 $username = "root";
-$password = "@Gusoce0310";
+$password = "";
 $database = "bioskop";
 
 $koneksi = mysqli_connect($host, $username, $password, $database);

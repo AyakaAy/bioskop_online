@@ -78,7 +78,6 @@ $total_film = count($movies);
         <section class="page-header">
             <div class="header-title">
                 <h1>Manajemen Film Studio</h1>
-                <p>Kelola katalog film produksi studio Anda secara efisien.</p>
             </div>
             <button class="btn-primary" onclick="window.location.href='tambah.php'"><i class="fa-solid fa-plus"></i> Tambah Film Baru</button>
         </section>

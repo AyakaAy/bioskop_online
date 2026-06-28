@@ -6,14 +6,10 @@ include 'header.php';
 include 'footer.php';
 ?>
 
-        <nav class="breadcrumbs">
-            <a href="#">Admin</a> &gt; <a href="#">Dashboard</a> &gt; <span class="current">Overview</span>
-        </nav>
-
         <section class="page-header">
             <div class="header-title">
                 <h1>Absolute Film Studio</h1>
-                <p>Pantau  penayangan fil,.</p>
+                <p>Pantau penayangan film</p>
             </div>
         </section>
 
@@ -59,7 +55,9 @@ include 'footer.php';
                 <p>Data grafik analitik transaksi dan penjadwalan akan di-load di sini.</p>
             </div>
         </section>
-
+        <footer class="main-footer">
+            <p>&copy; 2026 Absolute Cinema Studio Management System. All rights reserved.</p>
+        </footer>
     </main>
 </body>
 </html>

@@ -100,13 +100,33 @@ body {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
-    background: var(--bg-main);
+    margin-bottom: 16px;
 }
 
 .topbar-left {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
+}
+
+.logo-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.topbar-nav a {
+    text-decoration: none;
+    color: var(--text-primary);
+    margin-right: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .search-box {
@@ -117,66 +137,38 @@ body {
 
 .search-box i {
     position: absolute;
-    left: 14px;
-    color: var(--text-muted);
+    left: 12px;
 }
 
 .search-box input {
-    padding: 10px 14px 10px 40px;
+    padding: 10px 12px 10px 36px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: #ffffff;
-    width: 280px;
-    font-size: 0.9rem;
+    width: 240px;
     outline: none;
 }
 
-.topbar-nav a {
-    text-decoration: none;
-    color: var(--text-muted);
-    margin-right: 16px;
-    font-weight: 500;
-    font-size: 0.9rem;
+.icon-btn {
+    font-size: 1.2rem;
+    cursor: pointer;
 }
 
-.topbar-nav a.active {
-    color: var(--text-primary);
-    border-bottom: 2px solid var(--text-primary);
-    padding-bottom: 24px;
-}
-
-.topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-}
-
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.user-info {
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-}
-
-.user-name {
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.user-role {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-}
-
-.avatar {
+.border-avatar {
+    border: 1px solid var(--border-color);
+    padding: 4px;
     border-radius: 50%;
-    object-fit: cover;
+}
+
+.btn-dark {
+    background-color: var(--text-dark);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
 }
 
 /* Breadcrumbs Section */

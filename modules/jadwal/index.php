@@ -91,10 +91,6 @@ $total_jadwal = count($schedules);
             </div>
         </header>
 
-        <nav class="breadcrumbs">
-            <a href="#">Admin</a> &gt; <a href="#">Movies</a> &gt; <span class="current">Schedules</span>
-        </nav>
-
         <section class="page-header">
             <div class="header-title">
                 <h1>Manajemen Jadwal Tayang</h1>
