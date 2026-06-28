@@ -1,3 +1,46 @@
+<?php
+// 1. Hubungkan ke database 
+require_once "../../config/database.php";
+
+// Query JOIN dipertahankan agar relasi antar tabel tidak putus
+$query = "SELECT 
+            j.id_jadwal AS id,
+            f.judul,
+            f.poster,
+            f.rating_usia,
+            s.nama_studio AS studio,
+            j.tanggal,
+            j.jam_mulai AS jam,
+            j.harga_tiket AS harga
+          FROM jadwal j
+          JOIN film f ON j.id_film = f.id_film
+          JOIN studio s ON j.id_studio = s.id_studio
+          ORDER BY j.tanggal ASC, j.jam_mulai ASC";
+
+$result = mysqli_query($koneksi, $query);
+
+$schedules = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Disamakan polanya menggunakan struktur array eksplisit + fallback null coalescing (??)
+        $schedules[] = [
+            'id'          => $row['id'], 
+            'judul'       => $row['judul'] ?? '-',
+            'poster'      => !empty($row['poster']) ? $row['poster'] : 'default.jpg', 
+            'rating_usia' => $row['rating_usia'] ?? 'SU',
+            'studio'      => $row['studio'] ?? '-',
+            'bioskop'     => 'Absolute Cinema', // Teks manual karena kolom tidak ada di DB studio lu
+            'lokasi'      => 'Pusat',            // Teks manual karena kolom tidak ada di DB studio lu
+            'tanggal'     => $row['tanggal'],
+            'jam'         => $row['jam'],
+            'harga'       => $row['harga'] ?? 0
+        ];
+    }
+}
+
+$total_jadwal = count($schedules);
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -18,7 +61,7 @@
         <nav class="nav-menu">
             <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             <a href="../film/index.php"><i class="fa-solid fa-film"></i> Movies</a>
-            <a href="../jadwal/index.php"class="active"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
+            <a href="../jadwal/index.php" class="active"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
             <a href="../transaksi/index.php"><i class="fa-solid fa-users"></i> Transaksi</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
@@ -56,8 +99,8 @@
             <div class="header-title">
                 <h1>Manajemen Jadwal Tayang</h1>
             </div>
-            <form action="tambah.php" method="post">
-                <button class="btn-primary"><i class="fa-solid fa-plus"></i> Tambah Jadwal Tayang</button>
+            <form action="tambah.php" method="get">
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Tambah Jadwal Tayang</button>
             </form>
         </section>
 
@@ -68,7 +111,7 @@
                     <span class="stat-trend">+12%</span>
                 </div>
                 <p class="card-label">Total Penayangan Hari Ini</p>
-                <span class="card-value">142</span>
+                <span class="card-value"><?= $total_jadwal; ?></span>
             </div>
             <div class="card">
                 <div class="card-header-icon purple-icon">
@@ -104,43 +147,54 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($schedules as $row): ?>
-                    <tr>
-                        <td>
-                            <div class="movie-cell">
-                                <img src="<?= $row['poster']; ?>" alt="Poster" class="poster-thumb">
-                                <div class="movie-details">
-                                    <strong><?= $row['judul']; ?></strong>
-                                    <?php $badgeColor = ($row['rating_usia'] == 'D17+') ? 'badge-d17' : 'badge-r13'; ?>
-                                    <span class="badge-age <?= $badgeColor; ?>"><?= $row['rating_usia']; ?></span>
+                    <?php if (empty($schedules)): ?>
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px; color: #888;">Belum ada jadwal tayang yang dikonfigurasi.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($schedules as $row): ?>
+                        <tr>
+                            <td>
+                                <div class="movie-cell">
+                                    <img src="../../aset/img/poster/<?= htmlspecialchars($row['poster']); ?>" 
+                                         alt="Poster" 
+                                         class="poster-thumb" 
+                                         onerror="this.onerror=null; this.src='../../aset/img/default.jpg';">
+                                    <div class="movie-details">
+                                        <strong><?= htmlspecialchars($row['judul']); ?></strong>
+                                        <?php $badgeColor = ($row['rating_usia'] == 'D17+') ? 'badge-d17' : 'badge-r13'; ?>
+                                        <span class="badge-age <?= $badgeColor; ?>"><?= htmlspecialchars($row['rating_usia']); ?></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="location-cell">
-                                <strong><?= $row['bioskop']; ?></strong>
-                                <span class="subtext"><?= $row['lokasi']; ?></span>
-                            </div>
-                        </td>
-                        <td><span class="studio-text"><?= $row['studio']; ?></span></td>
-                        <td>
-                            <div class="datetime-cell">
-                                <span><i class="fa-regular fa-calendar-days"></i> <?= $row['tanggal']; ?></span>
-                                <span class="time-text"><i class="fa-regular fa-clock"></i> <?= $row['jam']; ?></span>
-                            </div>
-                        </td>
-                        <td><strong class="price-text"><?= $row['harga']; ?></strong></td>
-                        <td class="action-buttons">
-                            <a href="edit_schedule.php?id=<?= $row['id']; ?>" class="btn-edit"><i class="fa-solid fa-pencil"></i></a>
-                            <a href="delete_schedule.php?id=<?= $row['id']; ?>" class="btn-delete" onclick="return confirm('Hapus jadwal ini?')"><i class="fa-solid fa-trash"></i></a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
+                            </td>
+                            <td>
+                                <div class="location-cell">
+                                    <strong><?= htmlspecialchars($row['bioskop']); ?></strong>
+                                    <span class="subtext"><?= htmlspecialchars($row['lokasi']); ?></span>
+                                </div>
+                            </td>
+                            <td><span class="studio-text"><?= htmlspecialchars($row['studio']); ?></span></td>
+                            <td>
+                                <div class="datetime-cell">
+                                    <span><i class="fa-regular fa-calendar-days"></i> <?= date('d M Y', strtotime($row['tanggal'])); ?></span>
+                                    <span class="time-text"><i class="fa-regular fa-clock"></i> <?= date('H:i', strtotime($row['jam'])); ?> WIB</span>
+                                </div>
+                            </td>
+                            <td>
+                                <strong class="price-text">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></strong>
+                            </td>
+                            <td class="action-buttons">
+                                <a href="edit.php?id=<?= $row['id']; ?>" class="btn-edit"><i class="fa-solid fa-pencil"></i></a>
+                                <a href="proses.php?hapus=<?= $row['id']; ?>" class="btn-delete" onclick="return confirm('Hapus jadwal ini?')"><i class="fa-solid fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
 
             <div class="table-footer">
-                <p>Menampilkan 2 dari 142 jadwal penayangan</p>
+                <p>Menampilkan <?= count($schedules); ?> dari <?= $total_jadwal; ?> jadwal penayangan</p>
                 <div class="pagination">
                     <button class="page-nav" disabled>&lt;</button>
                     <button class="page-num active">1</button>
@@ -153,15 +207,8 @@
             </div>
         </section>
 
-        <footer class="system-footer">
-            <div class="footer-status">
-                <h4>SISTEM STATUS</h4>
-                <p><span class="status-indicator live"></span> Database Sinkron</p>
-            </div>
-            <div class="footer-help">
-                <h4>PUSAT BANTUAN</h4>
-                <a href="#">Panduan Manajemen Jadwal</a>
-            </div>
+        <footer class="main-footer">
+            <p>&copy; 2026 Absolute Cinema Studio Management System. All rights reserved.</p>
         </footer>
     </main>
 

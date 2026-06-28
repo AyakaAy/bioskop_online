@@ -510,3 +510,10 @@ body {
 .status-indicator.live {
     background-color: #22c55e;
 }
+
+.main-footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
