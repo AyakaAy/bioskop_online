@@ -134,9 +134,10 @@ $total_film = count($movies);
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $no = 1; ?>
                     <?php foreach ($movies as $movie): ?>
                     <tr>
-                        <td><?= $movie['id']; ?></td>
+                        <td><?= $no++; ?></td>
                         <td>
                             <div class="movie-info">
                                 <img src="<?= $movie['poster']; ?>" alt="Poster" class="poster-thumb">

@@ -1,6 +1,34 @@
 <?php
-require_once "database.php";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+require_once "../../config/database.php";
+
+$sql = "SELECT
+            transaksi.id_transaksi,
+            user.nama_user,
+            metode_pembayaran.jenis_metode,
+            transaksi.status_pembayaran,
+            transaksi.waktu_transaksi
+        FROM transaksi
+        INNER JOIN user
+            ON transaksi.id_user = user.id_user
+        INNER JOIN metode_pembayaran
+            ON transaksi.id_metode = metode_pembayaran.id_metode";
+
+$result = mysqli_query($koneksi, $sql);
+
+if (!$result) {
+    die(mysqli_error($koneksi));
+}
+
+$transactions = [];
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $transactions[] = $row;
+}
 ?>
+
 
 
 
@@ -115,26 +143,36 @@ require_once "database.php";
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($transactions as $row): ?>
-                    <tr>
-                        <td class="ps-24 text-dark fw-bold"><?= $row['id']; ?></td>
-                        <td class="text-dark fw-medium"><?= $row['customer']; ?></td>
-                        <td><?= $row['metode']; ?></td>
-                        <td>
-                            <?php 
-                                $statusClass = 'status-gagal';
-                                if ($row['status'] == 'LUNAS') $statusClass = 'status-lunas';
-                                if ($row['status'] == 'PENDING') $statusClass = 'status-pending';
-                            ?>
-                            <span class="badge-status <?= $statusClass; ?>"><?= $row['status']; ?></span>
-                        </td>
-                        <td class="text-muted small"><?= $row['waktu']; ?></td>
-                        <td class="action-buttons">
-                            <a href="print.php?id=<?= $row['id']; ?>" class="btn-print" title="Cetak Nota"><i class="fa-solid fa-print"></i></a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
+    <?php foreach ($transactions as $row): ?>
+    <tr>
+        <td class="ps-24 text-dark fw-bold"><?= $row['id_transaksi']; ?></td>
+        <td class="text-dark fw-medium"><?= $row['nama_user']; ?></td>
+        <td><?= $row['jenis_metode']; ?></td>
+        <td>
+            <?php
+                $statusClass = 'status-gagal';
+
+                if ($row['status_pembayaran'] == 'Lunas') {
+                    $statusClass = 'status-lunas';
+                }
+
+                if ($row['status_pembayaran'] == 'Pending') {
+                    $statusClass = 'status-pending';
+                }
+            ?>
+            <span class="badge-status <?= $statusClass; ?>">
+                <?= $row['status_pembayaran']; ?>
+            </span>
+        </td>
+        <td class="text-muted small"><?= $row['waktu_transaksi']; ?></td>
+        <td class="action-buttons">
+            <a href="cetak.php?id=<?= $row['id_transaksi']; ?>" class="btn-print" title="Cetak Nota">
+                <i class="fa-solid fa-print"></i>
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</tbody>
             </table>
 
             <div class="table-footer">

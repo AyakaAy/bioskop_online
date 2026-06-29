@@ -1,5 +1,35 @@
 <?php
-require_once "database.php";
+
+require_once "../../config/database.php";
+
+// Ambil data customer (simpan ke variabel query agar tidak tabrakan)
+$userQuery = mysqli_query($koneksi, "SELECT * FROM user");
+if (!$userQuery) {
+    die(mysqli_error($koneksi));
+}
+
+// Ambil data metode pembayaran
+$metodeQuery = mysqli_query($koneksi, "SELECT * FROM metode_pembayaran");
+if (!$metodeQuery) {
+    die(mysqli_error($koneksi));
+}
+
+// Ambil data jadwal + film
+$jadwalQuery = mysqli_query($koneksi, "
+SELECT
+    jadwal.id_jadwal,
+    film.judul,
+    jadwal.tanggal,
+    jadwal.jam_mulai
+FROM jadwal
+JOIN film
+ON jadwal.id_film = film.id_film
+");
+
+if (!$jadwalQuery) {
+    die(mysqli_error($koneksi));
+}
+
 ?>
 
 
@@ -9,7 +39,7 @@ require_once "database.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Absolute Cinema - Form Kasir Booking Tiket</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="form.css">
 </head>
@@ -34,8 +64,6 @@ require_once "database.php";
     </aside>
 
     <main class="main-content">
-        
-         <main class="main-content">
         <header class="topbar">
             <div class="topbar-left">
                 <nav class="breadcrumbs-top">
@@ -57,7 +85,7 @@ require_once "database.php";
             </div>
         </header>
 
-        <form action="process_booking.php" method="POST" class="form-card">
+        <form action="proses.php" method="POST" class="form-card">
             
             <div class="form-inner-header">
                 <div class="inner-header-icon">
@@ -78,9 +106,14 @@ require_once "database.php";
                         <label for="id_customer">Pilih Customer / User</label>
                         <div class="select-custom-wrapper">
                             <i class="fa-regular fa-user input-icon-left"></i>
-                            <select id="id_customer" name="id_customer" required>
+                            <select id="id_customer" name="id_user" required>
                                 <option value="" disabled selected>Cari atau pilih customer...</option>
-                                </select>
+                                <?php while($user = mysqli_fetch_assoc($userQuery)): ?>
+                                    <option value="<?= $user['id_user']; ?>">
+                                        <?= $user['nama_user']; ?>
+                                    </option>
+                                <?php endwhile; ?>
+                            </select>
                             <i class="fa-solid fa-chevron-down select-arrow-icon"></i>
                         </div>
                     </div>
@@ -89,11 +122,13 @@ require_once "database.php";
                         <label for="metode_pembayaran">Metode Pembayaran</label>
                         <div class="select-custom-wrapper">
                             <i class="fa-regular fa-wallet input-icon-left"></i>
-                            <select id="metode_pembayaran" name="metode_pembayaran" required>
-                                <option value="Tunai (Cash)">Tunai (Cash)</option>
-                                <option value="GoPay">GoPay</option>
-                                <option value="OVO">OVO</option>
-                                <option value="Transfer BCA">Transfer BCA</option>
+                            <select id="metode_pembayaran" name="id_metode" required>
+                                <option value="" disabled selected>Pilih metode pembayaran...</option>
+                                <?php while($m = mysqli_fetch_assoc($metodeQuery)): ?>
+                                    <option value="<?= $m['id_metode']; ?>">
+                                        <?= $m['jenis_metode']; ?>
+                                    </option>
+                                <?php endwhile; ?>
                             </select>
                             <i class="fa-solid fa-chevron-down select-arrow-icon"></i>
                         </div>
@@ -127,7 +162,12 @@ require_once "database.php";
                             <i class="fa-regular fa-calendar input-icon-left"></i>
                             <select id="id_jadwal" name="id_jadwal" required>
                                 <option value="" disabled selected>Pilih film dan jam tayang...</option>
-                                </select>
+                                <?php while($j = mysqli_fetch_assoc($jadwalQuery)): ?>
+                                    <option value="<?= $j['id_jadwal']; ?>">
+                                        <?= $j['judul']; ?> | <?= $j['tanggal']; ?> | <?= substr($j['jam_mulai'],0,5); ?>
+                                    </option>
+                                <?php endwhile; ?>
+                            </select>
                             <i class="fa-solid fa-chevron-down select-arrow-icon"></i>
                         </div>
                     </div>
@@ -152,9 +192,7 @@ require_once "database.php";
 
             <div class="form-actions-bar">
                 <button type="button" class="btn-cancel" onclick="window.history.back();">Batal</button>
-                <button type="submit" class="btn-submit-form"><i class="fa-regular fa-circle-check"></i> Buat Tiket</button>
-
-
+                <button type="submit" name="tambah" class="btn-submit-form"><i class="fa-regular fa-circle-check"></i> Buat Tiket</button>
             </div>
 
         </form>

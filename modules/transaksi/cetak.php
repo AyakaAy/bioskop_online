@@ -1,6 +1,103 @@
 <?php
 
+// Koneksi database 
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once "../../config/database.php";
+
+
+
+
+// Tangkap ID Transaksi utama dari URL terlebih dahulu
+$id_transaksi = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// 1. AMBIL DATA TRANSAKSI UTAMA DULU (Agar bisa jadi cadangan parameter jika URL tidak lengkap)
+$query_t = "SELECT t.*, u.nama_user, m.jenis_metode 
+            FROM transaksi t
+            LEFT JOIN user u ON t.id_user = u.id_user
+            LEFT JOIN metode_pembayaran m ON t.id_metode = m.id_metode
+            WHERE t.id_transaksi = $id_transaksi";
+$res_t = mysqli_query($koneksi, $query_t);
+$data_t = mysqli_fetch_assoc($res_t);
+
+if (!$data_t) {
+    die("Data transaksi tidak ditemukan di database.");
+}
+
+// Tangkap data jadwal: Cek URL dulu, jika tidak ada, ambil otomatis dari kolom transaksi di database
+$id_jadwal_url = isset($_GET['id_jadwal']) ? intval($_GET['id_jadwal']) : (isset($data_t['id_jadwal']) ? intval($data_t['id_jadwal']) : 0);
+// Tangkap nomor kursi: Cek URL dulu, jika tidak ada, ambil otomatis dari database transaksi
+$nomor_kursi = isset($_GET['kursi']) ? mysqli_real_escape_string($koneksi, $_GET['kursi']) : (isset($data_t['nomor_kursi']) ? $data_t['nomor_kursi'] : 'A1');
+
+// Atur template data awal (Default Fallback jika query jadwal gagal)
+$judul = 'Absolute Movie';
+$rating = 'SU';
+$genre = 'Action';
+$durasi = '120';
+$studio = 'STUDIO 1';
+$harga = 50000;
+
+// 2. QUERY LANGSUNG KE JADWAL & FILM BERDASARKAN PARAMETER (Anti-Avengers Lock)
+if ($id_jadwal_url > 0) {
+    $query_j = "SELECT j.*, f.*, s.nama_studio 
+                FROM jadwal j 
+                INNER JOIN film f ON j.id_film = f.id_film 
+                LEFT JOIN studio s ON j.id_studio = s.id_studio
+                WHERE j.id_jadwal = $id_jadwal_url";
+    $res_j = mysqli_query($koneksi, $query_j);
+    if ($res_j && $dt = mysqli_fetch_assoc($res_j)) {
+        $judul = $dt['judul'];
+        $rating = isset($dt['rating_usia']) ? $dt['rating_usia'] : 'SU';
+        $genre = $dt['genre'];
+        $durasi = $dt['durasi'];
+        $studio = !empty($dt['nama_studio']) ? $dt['nama_studio'] : 'STUDIO 1';
+        
+        // JIKA HARGA DI ISI DI JADWAL: Cek segala kemungkinan nama kolom harga di database kamu
+        if (isset($dt['harga']) && $dt['harga'] > 0) {
+            $harga = $dt['harga'];
+        } elseif (isset($dt['harga_tiket']) && $dt['harga_tiket'] > 0) {
+            $harga = $dt['harga_tiket'];
+        } elseif (isset($data_t['total_harga']) && $data_t['total_harga'] > 0) {
+            $harga = $data_t['total_harga'];
+        } elseif (isset($data_t['harga']) && $data_t['harga'] > 0) {
+            $harga = $data_t['harga'];
+        } else {
+            $harga = 50000; // Angka terakhir jika seluruh kolom database kosong
+        }
+    }
+}
+
+// 3. Masukkan data ke array $ticket bawaan HTML komponen UI-mu
+$ticket = [
+    'id'              => $data_t['id_transaksi'],
+    'judul'           => $judul,
+    'rating'          => $rating,
+    'genre'           => $genre,
+    'durasi'          => $durasi . ' Menit',
+    'studio'          => $studio, 
+    'waktu_transaksi' => $data_t['waktu_transaksi'],
+    'nomor_kursi'     => $nomor_kursi,
+    'customer'        => isset($data_t['nama_user']) ? $data_t['nama_user'] : 'Pelanggan',
+    'status'          => $data_t['status_pembayaran'],
+    'metode'          => isset($data_t['jenis_metode']) ? $data_t['jenis_metode'] : 'Tunai',
+    'harga_tiket'     => $harga
+];
+
+// Formatting Tanggal dan Waktu
+$tanggal_formatted = '-';
+$jam_formatted = '-';
+if (!empty($ticket['waktu_transaksi'])) {
+    $datetime = new DateTime($ticket['waktu_transaksi']);
+    $tanggal_formatted = $datetime->format('d M Y');
+    $jam_formatted = $datetime->format('H:i') . ' WIB';
+}
+
+
+
+
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -309,11 +406,43 @@
         }
 
         @media print {
-            body { background-color: #ffffff; padding: 0; }
-            .action-buttons-wrapper, .bottom-stats-row { display: none !important; } 
-            .main-ticket-card { box-shadow: none !important; border: 1px solid #cbd5e1; }
-            .ticket-cutout { display: none !important; } 
+        /* Tambahkan baris ini untuk menghapus header & footer bawaan browser */
+        @page {
+            margin: 0;
         }
+        
+        body {
+            padding: 20px !important; /* Beri padding sedikit agar isi tiket tidak terlalu mepet ke ujung kertas fisik */
+            background-color: #ffffff !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .action-buttons-wrapper, 
+        .bottom-stats-row { 
+            display: none !important; 
+        } 
+
+        .ticket-page-container {
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+        }
+
+        .main-ticket-card { 
+            box-shadow: none !important; 
+            border: 1px solid #cbd5e1 !important;
+            page-break-inside: avoid;
+        }
+
+        .ticket-cutout { 
+            display: block !important; 
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1;
+        }
+        
+        }       
+   
     </style>
 </head>
 <body>
@@ -325,7 +454,7 @@
                 <span class="badge-rating-age"><?= $ticket['rating']; ?></span>
                 <h1 class="movie-title-display"><?= $ticket['judul']; ?></h1>
                 <div class="banner-sub-row">
-                    <span>CINEPASS TICKET</span>
+                    <span>ABSOLUTE CINEMA TICKET</span>
                     <span><?= $ticket['studio']; ?></span>
                 </div>
             </div>
@@ -370,14 +499,14 @@
                         <i class="fa-regular fa-credit-card"></i>
                         <span><?= $ticket['metode']; ?></span>
                     </div>
-                    <h2 class="price-amount-text">Rp <?= number_format($ticket['harga_tiket'], 0, ',', '.'); ?></h2>
+                    <div class="price-amount-text">Rp <?= number_format((float)($ticket['harga_tiket'] ?? 0), 0, ',', '.'); ?></div>
                 </div>
                 
                 <div class="barcode-wrapper">
                     <div class="barcode-lines-container">
                         <div class="b-line th"></div><div class="b-line"></div><div class="b-line tw"></div><div class="b-line th"></div><div class="b-line"></div><div class="b-line tw"></div><div class="b-line"></div><div class="b-line th"></div><div class="b-line tw"></div><div class="b-line"></div><div class="b-line th"></div><div class="b-line"></div><div class="b-line tw"></div><div class="b-line th"></div><div class="b-line"></div><div class="b-line tw"></div>
                     </div>
-                    <span class="barcode-numeric-sub">002428062026</span>
+                    <span class="barcode-numeric-sub"><?= str_pad(rand(1, 999999999999), 12, "0", STR_PAD_LEFT); ?></span>
                 </div>
             </div>
         </div>
@@ -426,4 +555,5 @@
     </div>
 
 </body>
+
 </html>
