@@ -1,90 +1,52 @@
 <?php
-
-// Koneksi database 
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once "../../config/database.php";
 
+require_once "../../config/database.php"; 
 
-
-
-// Tangkap ID Transaksi utama dari URL terlebih dahulu
 $id_transaksi = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// 1. AMBIL DATA TRANSAKSI UTAMA DULU (Agar bisa jadi cadangan parameter jika URL tidak lengkap)
+// 1. Tarik manifes transaksi utama
 $query_t = "SELECT t.*, u.nama_user, m.jenis_metode 
             FROM transaksi t
-            LEFT JOIN user u ON t.id_user = u.id_user
-            LEFT JOIN metode_pembayaran m ON t.id_metode = m.id_metode
+            INNER JOIN user u ON t.id_user = u.id_user
+            INNER JOIN metode_pembayaran m ON t.id_metode = m.id_metode
             WHERE t.id_transaksi = $id_transaksi";
 $res_t = mysqli_query($koneksi, $query_t);
 $data_t = mysqli_fetch_assoc($res_t);
 
 if (!$data_t) {
-    die("Data transaksi tidak ditemukan di database.");
+    die("Data transaksi dengan nomor ID #" . $id_transaksi . " tidak ditemukan.");
 }
 
-// Tangkap data jadwal: Cek URL dulu, jika tidak ada, ambil otomatis dari kolom transaksi di database
-$id_jadwal_url = isset($_GET['id_jadwal']) ? intval($_GET['id_jadwal']) : (isset($data_t['id_jadwal']) ? intval($data_t['id_jadwal']) : 0);
-// Tangkap nomor kursi: Cek URL dulu, jika tidak ada, ambil otomatis dari database transaksi
-$nomor_kursi = isset($_GET['kursi']) ? mysqli_real_escape_string($koneksi, $_GET['kursi']) : (isset($data_t['nomor_kursi']) ? $data_t['nomor_kursi'] : 'A1');
-
-// Atur template data awal (Default Fallback jika query jadwal gagal)
-$judul = 'Absolute Movie';
-$rating = 'SU';
-$genre = 'Action';
-$durasi = '120';
-$studio = 'STUDIO 1';
-$harga = 50000;
-
-// 2. QUERY LANGSUNG KE JADWAL & FILM BERDASARKAN PARAMETER (Anti-Avengers Lock)
-if ($id_jadwal_url > 0) {
-    $query_j = "SELECT j.*, f.*, s.nama_studio 
-                FROM jadwal j 
-                INNER JOIN film f ON j.id_film = f.id_film 
+// 2. Ambil detail relasi tiket (KODE SUDAH FIX: Mengambil j.harga_tiket dari tabel jadwal)
+$query_tiket = "SELECT tk.*, j.tanggal, j.jam_mulai, j.harga_tiket, f.judul, f.rating_usia, f.genre, f.durasi, k.no_kursi, s.nama_studio
+                FROM tiket tk
+                INNER JOIN jadwal j ON tk.id_jadwal = j.id_jadwal
+                INNER JOIN film f ON j.id_film = f.id_film
+                INNER JOIN kursi k ON tk.id_kursi = k.id_kursi
                 LEFT JOIN studio s ON j.id_studio = s.id_studio
-                WHERE j.id_jadwal = $id_jadwal_url";
-    $res_j = mysqli_query($koneksi, $query_j);
-    if ($res_j && $dt = mysqli_fetch_assoc($res_j)) {
-        $judul = $dt['judul'];
-        $rating = isset($dt['rating_usia']) ? $dt['rating_usia'] : 'SU';
-        $genre = $dt['genre'];
-        $durasi = $dt['durasi'];
-        $studio = !empty($dt['nama_studio']) ? $dt['nama_studio'] : 'STUDIO 1';
-        
-        // JIKA HARGA DI ISI DI JADWAL: Cek segala kemungkinan nama kolom harga di database kamu
-        if (isset($dt['harga']) && $dt['harga'] > 0) {
-            $harga = $dt['harga'];
-        } elseif (isset($dt['harga_tiket']) && $dt['harga_tiket'] > 0) {
-            $harga = $dt['harga_tiket'];
-        } elseif (isset($data_t['total_harga']) && $data_t['total_harga'] > 0) {
-            $harga = $data_t['total_harga'];
-        } elseif (isset($data_t['harga']) && $data_t['harga'] > 0) {
-            $harga = $data_t['harga'];
-        } else {
-            $harga = 50000; // Angka terakhir jika seluruh kolom database kosong
-        }
-    }
-}
+                WHERE tk.id_transaksi = $id_transaksi LIMIT 1";
+$res_tiket = mysqli_query($koneksi, $query_tiket);
+$data_tiket = mysqli_fetch_assoc($res_tiket);
 
-// 3. Masukkan data ke array $ticket bawaan HTML komponen UI-mu
+// 3. Penataan array data $ticket untuk konsumsi tampilan UI/UX HTML
 $ticket = [
     'id'              => $data_t['id_transaksi'],
-    'judul'           => $judul,
-    'rating'          => $rating,
-    'genre'           => $genre,
-    'durasi'          => $durasi . ' Menit',
-    'studio'          => $studio, 
+    'judul'           => isset($data_tiket['judul']) ? $data_tiket['judul'] : 'Absolute Movie',
+    'rating'          => isset($data_tiket['rating_usia']) ? $data_tiket['rating_usia'] : 'SU',
+    'genre'           => isset($data_tiket['genre']) ? $data_tiket['genre'] : 'Drama / Action',
+    'durasi'          => isset($data_tiket['durasi']) ? $data_tiket['durasi'] . ' Menit' : '120 Menit',
+    'studio'          => !empty($data_tiket['nama_studio']) ? $data_tiket['nama_studio'] : 'STUDIO 1', 
     'waktu_transaksi' => $data_t['waktu_transaksi'],
-    'nomor_kursi'     => $nomor_kursi,
-    'customer'        => isset($data_t['nama_user']) ? $data_t['nama_user'] : 'Pelanggan',
+    'nomor_kursi'     => isset($data_tiket['no_kursi']) ? $data_tiket['no_kursi'] : 'A1',
+    'customer'        => $data_t['nama_user'],
     'status'          => $data_t['status_pembayaran'],
-    'metode'          => isset($data_t['jenis_metode']) ? $data_t['jenis_metode'] : 'Tunai',
-    'harga_tiket'     => $harga
+    'metode'          => $data_t['jenis_metode'],
+    'harga_tiket'     => isset($data_tiket['harga_tiket']) ? $data_tiket['harga_tiket'] : 0 // Menarik harga asli dari DB!
 ];
 
-// Formatting Tanggal dan Waktu
+// Sinkronisasi pemformatan waktu cetak nota
 $tanggal_formatted = '-';
 $jam_formatted = '-';
 if (!empty($ticket['waktu_transaksi'])) {
@@ -92,10 +54,6 @@ if (!empty($ticket['waktu_transaksi'])) {
     $tanggal_formatted = $datetime->format('d M Y');
     $jam_formatted = $datetime->format('H:i') . ' WIB';
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>

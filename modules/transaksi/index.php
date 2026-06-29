@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 
 require_once "../../config/database.php";
 
+// SQL Query yang stabil dan cepat (Ditambahkan ORDER BY DESC supaya transaksi terbaru muncul paling atas)
 $sql = "SELECT
             transaksi.id_transaksi,
             user.nama_user,
@@ -14,7 +15,8 @@ $sql = "SELECT
         INNER JOIN user
             ON transaksi.id_user = user.id_user
         INNER JOIN metode_pembayaran
-            ON transaksi.id_metode = metode_pembayaran.id_metode";
+            ON transaksi.id_metode = metode_pembayaran.id_metode
+        ORDER BY transaksi.id_transaksi DESC";
 
 $result = mysqli_query($koneksi, $sql);
 
@@ -28,9 +30,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     $transactions[] = $row;
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="id">
@@ -53,7 +52,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             <a href="../film/index.php"><i class="fa-solid fa-film"></i> Movies</a>
             <a href="../jadwal/index.php"><i class="fa-solid fa-chart-simple"></i> Jadwal Tayang</a>
-            <a href="../transaksi/index.php"class="active"><i class="fa-solid fa-users"></i> Transaksi</a>
+            <a href="../transaksi/index.php" class="active"><i class="fa-solid fa-users"></i> Transaksi</a>
             <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
         </nav>
         <div class="sidebar-footer">
@@ -143,36 +142,34 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </tr>
                 </thead>
                 <tbody>
-    <?php foreach ($transactions as $row): ?>
-    <tr>
-        <td class="ps-24 text-dark fw-bold"><?= $row['id_transaksi']; ?></td>
-        <td class="text-dark fw-medium"><?= $row['nama_user']; ?></td>
-        <td><?= $row['jenis_metode']; ?></td>
-        <td>
-            <?php
-                $statusClass = 'status-gagal';
-
-                if ($row['status_pembayaran'] == 'Lunas') {
-                    $statusClass = 'status-lunas';
-                }
-
-                if ($row['status_pembayaran'] == 'Pending') {
-                    $statusClass = 'status-pending';
-                }
-            ?>
-            <span class="badge-status <?= $statusClass; ?>">
-                <?= $row['status_pembayaran']; ?>
-            </span>
-        </td>
-        <td class="text-muted small"><?= $row['waktu_transaksi']; ?></td>
-        <td class="action-buttons">
-            <a href="cetak.php?id=<?= $row['id_transaksi']; ?>" class="btn-print" title="Cetak Nota">
-                <i class="fa-solid fa-print"></i>
-            </a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-</tbody>
+                    <?php foreach ($transactions as $row): ?>
+                    <tr>
+                        <td class="ps-24 text-dark fw-bold"><?= $row['id_transaksi']; ?></td>
+                        <td class="text-dark fw-medium"><?= $row['nama_user']; ?></td>
+                        <td><?= $row['jenis_metode']; ?></td>
+                        <td>
+                            <?php
+                                $statusClass = 'status-gagal';
+                                if ($row['status_pembayaran'] == 'Lunas') {
+                                    $statusClass = 'status-lunas';
+                                }
+                                if ($row['status_pembayaran'] == 'Pending') {
+                                    $statusClass = 'status-pending';
+                                }
+                            ?>
+                            <span class="badge-status <?= $statusClass; ?>">
+                                <?= $row['status_pembayaran']; ?>
+                            </span>
+                        </td>
+                        <td class="text-muted small"><?= $row['waktu_transaksi']; ?></td>
+                        <td class="action-buttons">
+                            <a href="cetak.php?id=<?= $row['id_transaksi']; ?>" class="btn-print" title="Cetak Nota">
+                                <i class="fa-solid fa-print"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
             </table>
 
             <div class="table-footer">
