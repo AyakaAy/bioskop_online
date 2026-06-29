@@ -1,3 +1,16 @@
+<?php
+// Panggil koneksi dari luar file
+require_once "../../config/database.php";
+
+// Mengambil data film menggunakan MySQLi Prosedural (variabel $conn otomatis terbaca)
+$query_film = "SELECT id_film, judul FROM film ORDER BY judul ASC";
+$result_film = mysqli_query($koneksi, $query_film);
+
+// Mengambil data studio menggunakan MySQLi Prosedural
+$query_studio = "SELECT id_studio, nama_studio FROM studio ORDER BY nama_studio ASC";
+$result_studio = mysqli_query($koneksi, $query_studio);
+
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -32,21 +45,26 @@
         
         <header class="topbar">
             <div class="topbar-left">
-                <nav class="breadcrumbs-top">
-                    <span class="nav-breadcrumb-item">Dashboard</span> &gt; 
-                    <span class="nav-breadcrumb-item">Jadwal Tayang</span> &gt; 
-                    <span class="nav-breadcrumb-item current">Tambah Jadwal</span>
+                <span class="logo-text">Absolute Cinema</span>
+                <nav class="topbar-nav">
+                    <a href="#">Recent</a>
+                    <a href="#">Drafts</a>
+                    <a href="#">Archived</a>
                 </nav>
             </div>
             <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Cari film...">
+                </div>
                 <i class="fa-regular fa-bell icon-btn"></i>
-                <i class="fa-regular fa-circle-question icon-btn"></i>
-                <span class="logo-text-right">Absolute Cinema</span>
+                <i class="fa-regular fa-user icon-btn"></i>
             </div>
         </header>
 
-        <form action="process.php" method="POST" class="form-card">
-            
+        <form action="proses.php" method="POST" class="form-card">
+            <input type="hidden" name="tambah" value="1">
+
             <div class="form-inner-header">
                 <div class="inner-header-icon">
                     <i class="fa-regular fa-calendar-plus"></i>
@@ -62,7 +80,16 @@
                 <div class="select-custom-wrapper">
                     <select id="id_film" name="id_film" required>
                         <option value="" disabled selected>-- Pilih Film yang Tersedia --</option>
-                        </select>
+                        <?php 
+                        if ($result_film && $result_film->num_rows > 0):
+                            while ($row = $result_film->fetch_assoc()): 
+                        ?>
+                            <option value="<?= $row['id_film']; ?>"><?= htmlspecialchars($row['judul']); ?></option>
+                        <?php 
+                            endwhile; 
+                        endif;
+                        ?>
+                    </select>
                     <i class="fa-solid fa-chevron-down select-arrow-icon"></i>
                 </div>
             </div>
@@ -73,6 +100,15 @@
                     <div class="select-custom-wrapper">
                         <select id="id_studio" name="id_studio" required>
                             <option value="" disabled selected>Pilih Studio</option>
+                            <?php 
+                            if ($result_studio && $result_studio->num_rows > 0):
+                                while ($row = $result_studio->fetch_assoc()): 
+                            ?>
+                                <option value="<?= $row['id_studio']; ?>"><?= htmlspecialchars($row['nama_studio']); ?></option>
+                            <?php 
+                                endwhile; 
+                            endif;
+                            ?>
                         </select>
                         <i class="fa-solid fa-chevron-down select-arrow-icon"></i>
                     </div>
@@ -82,7 +118,7 @@
                     <label for="harga_tiket">HARGA TIKET</label>
                     <div class="input-prefix-group">
                         <span class="input-prefix">Rp</span>
-                        <input type="number" id="harga_tiket" name="harga_tiket" placeholder="35000" required>
+                        <input type="number" id="harga_tiket" name="harga_tiket" placeholder="35000" step="0.01" required>
                     </div>
                 </div>
             </div>
@@ -101,7 +137,7 @@
 
             <div class="form-actions-bar">
                 <button type="button" class="btn-cancel" onclick="window.history.back();">Batal</button>
-                <button type="submit" class="btn-submit-form"><i class="fa-solid fa-check"></i> Simpan Jadwal</button>
+                <button type="submit" name="tambah" class="btn-submit-form"><i class="fa-solid fa-check"></i> Simpan Jadwal</button>
             </div>
 
         </form>

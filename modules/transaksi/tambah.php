@@ -1,3 +1,8 @@
+<?php
+require_once "database.php";
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -30,21 +35,25 @@
 
     <main class="main-content">
         
+         <main class="main-content">
         <header class="topbar">
             <div class="topbar-left">
                 <nav class="breadcrumbs-top">
                     <span class="nav-breadcrumb-item">Dashboard</span> &gt; 
-                    <span class="nav-breadcrumb-item">Transaksi</span> &gt; 
-                    <span class="nav-breadcrumb-item current">Baru</span>
+                    <span class="nav-breadcrumb-item">Kelola Film</span> &gt; 
+                    <span class="nav-breadcrumb-item current">Tambah Film</span>
                 </nav>
             </div>
             <div class="topbar-right">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Cari transaksi...">
+                    <input type="text" placeholder="Cari data film...">
                 </div>
-                <i class="fa-regular fa-bell icon-btn"></i>
-                <i class="fa-regular fa-circle-question icon-btn"></i>
+                <div class="icon-notification-wrapper">
+                    <i class="fa-regular fa-bell icon-btn"></i>
+                    <span class="notification-dot"></span>
+                </div>
+                <i class="fa-regular fa-user icon-btn border-avatar"></i>
             </div>
         </header>
 

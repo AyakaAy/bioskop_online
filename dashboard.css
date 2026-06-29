@@ -24,7 +24,7 @@ body {
 }
 
 /* ==========================================
-   STYLE UNTUK LOGO & SIDEBAR
+    STYLE UNTUK LOGO & SIDEBAR (DIPERTAHANKAN)
    ========================================== */
 .sidebar {
     width: 240px;
@@ -40,7 +40,6 @@ body {
     z-index: 100;
 }
 
-/* Desain Box Logo di Atas Sidebar */
 .brand-profile {
     display: flex;
     align-items: center;
@@ -92,7 +91,7 @@ body {
 }
 
 .nav-menu a i {
-    width: 20px; /* Menjaga logo menu sejajar vertikal */
+    width: 20px; 
     font-size: 1.05rem;
 }
 
@@ -117,23 +116,31 @@ body {
 }
 
 /* ==========================================
-   STYLE UNTUK NAVBAR / TOPBAR
+    STYLE NAVBAR / TOPBAR (SUDAH DISAMAKAN)
    ========================================== */
+.main-content {
+    margin-left: 240px; /* Lebar offset yang menahan konten agar tidak tertutup sidebar */
+    flex-grow: 1;
+    padding: 0 40px 40px 40px;
+}
+
 .topbar {
     height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
 
+/* Penambahan class layouting sisi kiri topbar */
 .topbar-left {
     display: flex;
     align-items: center;
     gap: 32px;
 }
 
+/* Penambahan class untuk text logo brand di topbar */
 .logo-text {
     font-size: 1.4rem;
     font-weight: 700;
@@ -146,6 +153,11 @@ body {
     margin-right: 20px;
     font-weight: 500;
     font-size: 0.9rem;
+}
+
+.topbar-nav a.active {
+    color: var(--text-dark);
+    font-weight: 600;
 }
 
 .topbar-right {
@@ -163,6 +175,7 @@ body {
 .search-box i {
     position: absolute;
     left: 12px;
+    color: var(--text-primary);
 }
 
 .search-box input {
@@ -174,9 +187,33 @@ body {
     outline: none;
 }
 
+/* Integrasi sistem badge notifikasi & avatar image dari kedua style */
+.icon-notification-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .icon-btn {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     cursor: pointer;
+    color: var(--text-primary);
+}
+
+.notification-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    border: 2px solid var(--bg-main);
+}
+
+.user-avatar-img {
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    object-fit: cover;
 }
 
 .border-avatar {
@@ -185,19 +222,8 @@ body {
     border-radius: 50%;
 }
 
-.btn-dark {
-    background-color: var(--text-dark);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-}
-
 /* ==========================================
-   STYLE CARD STATISTIK & LOGO INDIKATOR
+    STYLE CARD STATISTIK & ELEMENT DATA (DIPERTAHANKAN)
    ========================================== */
 .breadcrumbs {
     font-size: 0.8rem;
@@ -207,6 +233,10 @@ body {
 .breadcrumbs a {
     text-decoration: none;
     color: var(--primary-blue);
+}
+
+.breadcrumbs .current {
+    color: var(--text-primary);
 }
 
 .page-header {
@@ -222,9 +252,21 @@ body {
     color: var(--text-dark);
 }
 
-/* Tombol Hijau Sesuai Desain Gambar 3 */
 .btn-success {
     background-color: var(--success-green);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue);
     color: white;
     border: none;
     padding: 12px 20px;
@@ -258,7 +300,6 @@ body {
     overflow: hidden;
 }
 
-/* Box Wadah Logo di Dalam Card */
 .stat-icon-box {
     width: 48px;
     height: 48px;
@@ -285,7 +326,6 @@ body {
     color: var(--text-dark);
 }
 
-/* Logo Watermark Samar di Sisi Kanan Card */
 .card-watermark-icon {
     position: absolute;
     right: 16px;
@@ -296,7 +336,6 @@ body {
     pointer-events: none;
 }
 
-/* Content Container & Placeholder */
 .table-container {
     background: white;
     border: 1px solid var(--border-color);
@@ -338,9 +377,22 @@ body {
     margin-bottom: 12px;
 }
 
+.content-body {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 60px 24px;
+    text-align: center;
+}
+
+.placeholder-box i {
+    font-size: 3rem;
+    color: #cbd5e1;
+    margin-bottom: 16px;
+}
+
 .main-footer {
     text-align: center;
     margin-top: 40px;
     font-size: 0.8rem;
-    color: var(--text-muted);
 }
